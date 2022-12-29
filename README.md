@@ -32,3 +32,8 @@ Memeber Functions:
    - phone_chk(self):
    -      Checks if the phone number is of lenth 10 and is a numerical value
 Every data members are Private in class and cannot be modified by the object of the class to apply data hiding and protection.
+
+**API Integration:**
+  - I have integrated the API of SMS Magic along with it
+  -  API Endpoint being- https://api.txtbox.in/v1/sms/send
+  -  API call is of "POST" Type which sends the sucessful message to user through API
