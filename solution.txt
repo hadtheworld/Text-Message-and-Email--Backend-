@@ -1,0 +1,20 @@
+Failed: Scheduled Email date is of a past date
+Failed: Scheduled Message date is of a past date
+Failed: Scheduled Email date is of a past date
+Failed: Scheduled Message date is of a past date
+Failed: Scheduled Email date is of a past date
+Failed: Scheduled Message date is of a past date
+Success: Email:- Test Message 1 scheduled to be sent on 30/12/22
+Success: Test Message 1 is scheduled to be sent on 30/12/22 on phone-9199911111
+Success: Email:- Test Message 2 scheduled to be sent on 30/12/22
+Success: Test Message 2 is scheduled to be sent on 30/12/22 on phone-8544485444
+Success: email sent on 17 hr-43 min-31 sec
+Failed: it is not day time in USA
+Success: email sent on 17 hr-43 min-31 sec
+Failed: it is not day time in USA
+Success: email sent on 17 hr-43 min-31 sec
+Failed: it is not day time in INDIA
+Success: email sent on 17 hr-43 min-31 sec
+Failed: it is not day time in USA
+Failed to sent email: Invalid email address
+Failed: it is not day time in INDIA
