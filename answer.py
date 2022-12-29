@@ -3,7 +3,7 @@ import csv
 # datetime is used for checking chedule related and 10AM to 5PM related logic
 from datetime import datetime
 import re
-# import requests  # unable to find working key for your API
+import requests  # unable to find working key for your API
 # Assumptions:
 #    USA and India are the only 2 countries in the csv File
 #    sending same messages again is the users choice and no duplicate messages will be created by the Code
@@ -22,6 +22,11 @@ class Messaging:
         self.__now=datetime.now()
         self.__source=ans_file
         self.__regx=r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
+        self.__url="https://api.txtbox.in/v1/sms/send"
+        self.__header={
+            'apiKey': "9f81fddf27be1aa3e73a0619392cbc0c",
+            'content-type': "application/x-www-form-urlencoded",
+            }
     def read(self):
         File=open(self.__file,'r')
         File2=open(self.__source,"a")
@@ -39,14 +44,16 @@ class Messaging:
                         File2.write("Success: email sent on "+self.__now.strftime("%H hr-%M min-%S sec")+"\n")
                     if self.phone_chk():
                         File2.write("Failed: wrong phone number\n")
-                    elif int(self.__now.strftime("%H")) > 3 or (int(self.__now.strftime("%H"))==3 and int(self.__now.strftime("%M"))>30):
+                    elif (int(self.__now.strftime("%H")) > 3 or (int(self.__now.strftime("%H"))==3 and int(self.__now.strftime("%M"))>30)) and (int(self.__now.strftime("%H")) <20 or (int(self.__now.strftime("%H"))==20 and int(self.__now.strftime("%M"))<30)):
                         File2.write("Failed: it is not day time in "+self.__country+"\n")
-                    elif int(self.__now.strftime("%H")) <20 or (int(self.__now.strftime("%H"))==20 and int(self.__now.strftime("%M"))<30):
-                        File2.write("Failed: It is not day time in "+self.__country+"\n")
                     elif self.chk_message_leng():
                         File2.write("Failed: message length in not in correct range 1-160 excluding 1\n")
                     else:
                         File2.write("Success: "+self.__Message+" sent on "+self.__Phone+" on "+self.__now.strftime("%H-%M-%S"))
+                        data="Success: "+self.__Message+" sent on "+self.__Phone+" on "+self.__now.strftime("%H-%M-%S")
+                        payload="mobile_number="+self.__Phone+"&sms_text="+data+"&sender_id="+self.__email
+                        response=requests.request("POST", self.__url, data=payload, headers=self.__header)
+                        print(response.text)
                 else:
                     if self.email_chk():
                         File2.write("Failed to sent email: Invalid email address\n")
@@ -62,6 +69,10 @@ class Messaging:
                         File2.write("Failed: Scheduled Message date is of a past date\n")
                     else:
                         File2.write("Success: "+self.__Message+" is scheduled to be sent on "+self.__schedule+" on phone-"+self.__Phone+"\n")
+                        data="Success: "+self.__Message+" is scheduled to be sent on "+self.__schedule+" on phone-"+self.__Phone+"\n"
+                        payload="mobile_number="+self.__Phone+"&sms_text="+data+"&sender_id="+self.__email
+                        response=requests.request("POST", self.__url, data=payload, headers=self.__header)
+                        print(response.text)
             else:
                 if self.__schedule==None:
                     if self.email_chk():
@@ -70,14 +81,18 @@ class Messaging:
                         File2.write("Success: email sent on "+self.__now.strftime("%H hr-%M min-%S sec")+"\n")
                     if self.phone_chk():
                         File2.write("Failed: wrong phone number\n")
-                    elif int(self.__now.strftime("%H")) > 17 or (int(self.__now.strftime("%H"))==17 and int(self.__now.strftime("%M"))>30):
+                    elif int(self.__now.strftime("%H")) > 17 or (int(self.__now.strftime("%H"))==17 and int(self.__now.strftime("%M"))>0):
                         File2.write("Failed: it is not day time in "+self.__country+"\n")
-                    elif int(self.__now.strftime("%H")) <10 or (int(self.__now.strftime("%H"))==10 and int(self.__now.strftime("%M"))<30):
+                    elif int(self.__now.strftime("%H")) <10 :
                         File2.write("Failed: It is not day time in "+self.__country+"\n")
                     elif self.chk():
                         File2.write("Failed: message length in not in correct range 1-160 excluding 1\n")
                     else:
                         File2.write("Success: "+self.__Message+" sent on "+self.__Phone+" on "+self.__now.strftime("%H-%M-%S"))
+                        data="Success: "+self.__Message+" sent on "+self.__Phone+" on "+self.__now.strftime("%H-%M-%S")
+                        payload="mobile_number="+self.__Phone+"&sms_text="+data+"&sender_id="+self.__email
+                        response=requests.request("POST", self.__url, data=payload, headers=self.__header)
+                        print(response.text)
                 else:
                     if self.email_chk():
                         File2.write("Failed to sent email: Invalid email address\n")
@@ -93,6 +108,10 @@ class Messaging:
                         File2.write("Failed: Scheduled Message date is of a past date\n")
                     else:
                         File2.write("Success: "+self.__Message+" is scheduled to be sent on "+self.__schedule+" on phone-"+self.__Phone+"\n")
+                        data="Success: "+self.__Message+" is scheduled to be sent on "+self.__schedule+" on phone-"+self.__Phone+"\n"
+                        payload="mobile_number="+self.__Phone+"&sms_text="+data+"&sender_id="+self.__email
+                        response=requests.request("POST", self.__url, data=payload, headers=self.__header)
+                        print(response.text)
         File.close()
         File2.close()
 
